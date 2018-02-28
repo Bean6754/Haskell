@@ -7,14 +7,35 @@
 module Main where
 
 import Data.Char
+import System.Directory
 import System.IO
 
+main :: IO()
 main = do
+    let fileName = "users.txt"
+        fileName2 = "passwords.txt"
+
+    fileExist <- doesFileExist fileName2
+    if not fileExist
+    then writeFile fileName2 "root\n"
+    else return()
+
+    fileExist <- doesFileExist fileName
+    if not fileExist
+    then writeFile fileName "root\n"
+    else return()
+
+    --withFile fileName ReadMode (\handle -> do
+    --    contents <- hGetContents handle
+    --    putStr contents)
+
     putStrLn "Hello!"
-    putStrLn "What is your firstname?"
+    putStrLn "Firstname: "
     firstName <- getLine
-    putStrLn "What is your surname?"
-    surName <- getLine
+    putStrLn "Password: "
+    passWord <- getLine
     let bigFirstName = map toUpper firstName
-        bigSurName = map toUpper surName
-    putStrLn $ " Welcome: " ++ bigFirstName ++ " " ++ bigSurName ++ ". How are you today?"
+        bigPassWord = map toUpper passWord
+    appendFile fileName $ bigFirstName ++ "\n"
+    appendFile fileName2 $ passWord ++ "\n"
+    putStrLn $ " Welcome: " ++ bigFirstName ++ ". How are you today?"
